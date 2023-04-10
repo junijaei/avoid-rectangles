@@ -1,4 +1,4 @@
-export default class Box {
+export default class Item {
   #x;
   #y;
   #width;
@@ -7,14 +7,13 @@ export default class Box {
   #speed;
   #colorArr;
 
-  constructor(x = 0, speed = 3) {
+  constructor(x = 0, speed = 4) {
     this.#x = x;
     this.#y = 0;
-    this.#width = 20;
-    this.#height = 20;
-    this.#colorArr = ['#AEFFBE', '#AEFFD4', '#C9FFAE', '#AEFFDF'];
-    let colorIndex = Math.floor(Math.random() * 4);
-    this.#color = this.#colorArr[colorIndex];
+    this.#width = 15;
+    this.#height = 15;
+    this.#colorArr = ['#9933FF', '#FFCCFF', '#CC99FF'];
+    
     this.#speed = speed;
   }
 
@@ -27,7 +26,8 @@ export default class Box {
     let y = this.#y;
     let width = this.#width;
     let height = this.#height;
-    let color = this.#color;
+    let colorIndex = Math.floor(Math.random() * 3);
+    let color = this.#colorArr[colorIndex];
 
     ctx.fillStyle = color;
     ctx.fillRect(x, y, width, height);
@@ -58,14 +58,6 @@ export default class Box {
 
   get height() {
     return this.#height;
-  }
-
-  get speed(){
-    return this.#speed;
-  }
-
-  set speed(v){
-    this.#speed = v;
   }
 
   speedUp() {

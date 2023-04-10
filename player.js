@@ -65,6 +65,10 @@ export default class Player {
     if (this.#moveRight) this.#x += this.#speed;
   }
 
+  speedUp(){
+    this.#speed += 0.5;
+  }
+
   get x() {
     return this.#x;
   }

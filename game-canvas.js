@@ -1,6 +1,7 @@
 import Player from './player.js';
 import Box from './box.js';
 import Info from './info.js';
+import Item from './item.js'
 
 export default class GameCanvas {
   #obj;
@@ -8,17 +9,18 @@ export default class GameCanvas {
   #tid;
   #player;
   #boxes;
+  #items;
   #info;
   #gameover;
   #levelUp;
   #level;
   #levelAppearCount;
-  #levelValue;
   #gameTime;
   #score;
 
   #createBoxDelay;
   #maxDelay;
+  #createItemDelay;
   #levelUpTime;
 
   constructor() {
@@ -32,6 +34,7 @@ export default class GameCanvas {
     this.#tid = null;
     this.#maxDelay = 30;
     this.#createBoxDelay = this.#maxDelay;
+    this.#createItemDelay = 300;
     this.#level = 1;
     this.#levelUpTime = 0;
     this.#levelAppearCount = 0;
@@ -44,6 +47,7 @@ export default class GameCanvas {
     this.#player = new Player();
     this.#boxes = [];
     this.#info = new Info();
+    this.#items = [];
 
     this.body = null;
 
@@ -78,9 +82,19 @@ export default class GameCanvas {
     this.#boxes.push(new Box(x, 3 + this.#level * 0.5));
   }
 
+  createItem() {
+    let x = Math.floor(Math.random() * 480);
+    let speed = 3;
+
+    if(this.#boxes.length!=0){
+      speed = this.#boxes[this.#boxes.length-1].speed;
+    }
+    
+    this.#items.push(new Item(x, speed += 0.5));
+  }
+
   paint() {
     if (this.#levelAppearCount != 0) {
-      console.log('img');
       this.#ctx.drawImage(this.#levelUp, 165, 150, 200, 150);
       this.#levelAppearCount--;
     }
@@ -89,6 +103,10 @@ export default class GameCanvas {
     this.#player.draw(this.#ctx);
     for (let box of this.#boxes) {
       box.draw(this.#ctx);
+    }
+
+    for(let item of this.#items){
+      item.draw(this.#ctx);
     }
   }
 
@@ -105,16 +123,34 @@ export default class GameCanvas {
     return false;
   }
 
+  isAdded() {
+    for (let item of this.#items) {
+      if (
+        item.y + item.height >= 660 &&
+        this.#player.x < item.x + item.width &&
+        this.#player.x + this.#player.width > item.x
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   update() {
     if (this.isCollision()) {
       this.#ctx.drawImage(this.#gameover, 130, 100);
       return;
     }
 
+    if(this.isAdded()){
+      this.#items.shift();
+      this.#player.speedUp();
+      this.#score += 2;
+    }
+
     this.#levelUpTime++;
 
     if (Math.floor(this.#levelUpTime % 500) == 0) {
-      console.log('levelup');
       this.#level++;
       this.#maxDelay -= 5;
       this.#boxes.forEach((box) => (box.speed += 0.5));
@@ -129,6 +165,8 @@ export default class GameCanvas {
       this.createBox();
       this.#createBoxDelay = this.#maxDelay;
     }
+    
+    
     for (let box of this.#boxes) {
       box.update();
       if (box.endCheck(this.#obj.height)) {
@@ -136,6 +174,21 @@ export default class GameCanvas {
         this.#score++;
       }
     }
+    
+    this.#createItemDelay--;
+    
+    if (this.#createItemDelay == 0) {
+      this.createItem();
+      this.#createItemDelay = 300;
+    }
+    
+    for (let item of this.#items) {
+      item.update();
+      if (item.endCheck(this.#obj.height)) {
+        this.#items.shift();
+      }
+    }
+
     this.#ctx.clearRect(0, 0, 500, 700);
   }
 
