@@ -94,20 +94,20 @@ export default class GameCanvas {
   }
 
   paint() {
-    if (this.#levelAppearCount != 0) {
+    if (this.#levelAppearCount != 0 && !this.isCollision()) {
       this.#ctx.drawImage(this.#levelUp, 165, 150, 200, 150);
       this.#levelAppearCount--;
     }
 
-    this.#info.draw(this.#ctx, this.#level, this.#gameTime, this.#score);
     this.#player.draw(this.#ctx);
     for (let box of this.#boxes) {
       box.draw(this.#ctx);
     }
-
+    
     for(let item of this.#items){
       item.draw(this.#ctx);
     }
+    this.#info.draw(this.#ctx, this.#level, this.#gameTime, this.#score);
   }
 
   isCollision() {
@@ -149,7 +149,7 @@ export default class GameCanvas {
 
     if (Math.floor(this.#levelUpTime % 500) == 0) {
       this.#level++;
-      this.#maxDelay -= 5;
+      this.#maxDelay <= 5 ? 3 : this.#maxDelay -= 5;
       this.#boxes.forEach((box) => (box.speed += 0.5));
       this.#levelAppearCount = 50;
     }
@@ -157,7 +157,7 @@ export default class GameCanvas {
     this.#player.update();
 
     this.#createBoxDelay--;
-
+    console.log(this.#createBoxDelay);
     if (this.#createBoxDelay == 0) {
       this.createBox();
       this.#createBoxDelay = this.#maxDelay;
@@ -195,6 +195,7 @@ export default class GameCanvas {
     }, 1000);
     this.#tid = setInterval(() => {
       if (this.isCollision()) {
+        // this.#ctx.clearRect(165, 150, 200, 150);
         this.#ctx.drawImage(this.#gameover, 130, 100);
         return;
       }
