@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .d-none {
+        display: none;
+      }
+      canvas {
+        display: block;
+        position: relative;
+        border: 1px solid black;
+        margin: 0 auto;
+        z-index: 0;
+        /* display: flex;
+            justify-content: space-between; */
+      }
+      /* #level {
+        border: none;
+        position: absolute;
+        top: 10%;
+        left: 10%;
+        font: 1.2em "Pixel intv"
+      }
+      #time {
+        border: none;
+        position: absolute;
+        top: 3.5vmin;
+        left: 65vmin;
+        font: 1.2em "Pixel intv"
+      }
+    #score-string {
+        margin: 0;
+        position: absolute;
+        top: 1vmin;
+        left: 27.5vmin;
+        font: 1.2em "Pixel intv"
+        }
+    #score {
+        border: none;
+        position: absolute;
+        top: 3.5vmin;
+        left: 30vmin;
+        font: 1.2em "Pixel intv"
+    } */
+    </style>
+    <script src="./app.js" defer="defer" type="module"></script>
+  </head>
+  <body>
+    <!-- <canvas id="canvas">
+        <p id="score-string">Score</p>
+        <input id="level" value="level"></input>
+        <input id="time" value="time"></input>
+        <input id="score" value="Score"></input>
+    </canvas> -->
+    <img id="gameover" src="./img/gameover.png" class="d-none" />
+    <img id="level-up" src="./img/level-up.png" class="d-none" />
+  </body>
+</html>
