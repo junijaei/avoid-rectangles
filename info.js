@@ -9,7 +9,7 @@ export default class Info {
     ctx.font = '1.2em "Pixel intv"';
     ctx.fillStyle = this.#color;
     ctx.fillText(`Level : ${level}`, 380, 30);
-    ctx.fillText(`Time : ${time}`, 385, 60);
+    ctx.fillText(`Time : ${time}`, 380, 60);
     ctx.fillText(`Score : ${score}`, 20, 30);
   }
 }

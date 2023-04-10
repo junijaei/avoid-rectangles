@@ -137,10 +137,7 @@ export default class GameCanvas {
   }
 
   update() {
-    if (this.isCollision()) {
-      this.#ctx.drawImage(this.#gameover, 130, 100);
-      return;
-    }
+
 
     if(this.isAdded()){
       this.#items.shift();
@@ -194,11 +191,13 @@ export default class GameCanvas {
 
   run() {
     setInterval(() => {
-      if (!this.isCollision()) {
         this.#gameTime++;
-      }
     }, 1000);
     this.#tid = setInterval(() => {
+      if (this.isCollision()) {
+        this.#ctx.drawImage(this.#gameover, 130, 100);
+        return;
+      }
       this.update();
       this.paint();
     }, 17);
